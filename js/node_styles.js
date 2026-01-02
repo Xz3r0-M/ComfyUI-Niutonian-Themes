@@ -265,6 +265,15 @@ function applyTheme() {
     const titleH = options.title_height || LiteGraph.NODE_TITLE_HEIGHT || 30;
     const w = this.size[0];
     
+    // Check if node has manual colors set by user
+    const hasManualColor = (this.color && this.color !== LiteGraph.NODE_DEFAULT_COLOR) || 
+                          (this.bgcolor && this.bgcolor !== LiteGraph.NODE_DEFAULT_BGCOLOR);
+    
+    // If node has manual colors, use original drawing
+    if (hasManualColor) {
+      return originalDrawTitleBarBackground.call(this, ctx, options);
+    }
+    
     // Skip if transparent or no title
     if (this.title_mode === LiteGraph.TRANSPARENT_TITLE) {
       return;
@@ -301,6 +310,15 @@ function applyTheme() {
   LGraphCanvas.prototype.drawNodeShape = function(node, ctx, size, fgcolor, bgcolor, selected, mouse_over) {
     const pack = getPack();
     const accent = getAccent(node);
+    
+    // Check if node has manual colors set by user
+    const hasManualColor = (node.color && node.color !== LiteGraph.NODE_DEFAULT_COLOR) || 
+                          (node.bgcolor && node.bgcolor !== LiteGraph.NODE_DEFAULT_BGCOLOR);
+    
+    // If node has manual colors, use original drawing and skip theme effects
+    if (hasManualColor) {
+      return originalDrawNodeShape.call(this, node, ctx, size, fgcolor, bgcolor, selected, mouse_over);
+    }
     
     // Detect if node is currently executing
     let isExecuting = false;
