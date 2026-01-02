@@ -688,10 +688,17 @@ app.registerExtension({
       }
     });
   },
-  
-  getCanvasMenuItems() {
-    return buildMenu();
-  },
 });
+
+// Also add to LiteGraph menu
+setTimeout(() => {
+  const LGC = globalThis?.LGraphCanvas;
+  if (LGC) {
+    const orig = LGC.prototype.getCanvasMenuOptions;
+    LGC.prototype.getCanvasMenuOptions = function() {
+      return [...(orig?.call(this) || []), ...buildMenu()];
+    };
+  }
+}, 2000);
 
 export { STYLE_PACKS, getPackId, setPackId };
