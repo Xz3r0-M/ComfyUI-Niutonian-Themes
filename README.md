@@ -1,6 +1,7 @@
 # ComfyUI-Niutonian-Themes
 
-A professional theme pack for ComfyUI that transforms the node editor with modern, visually stunning styles while preserving full functionality.
+
+A theme pack for ComfyUI that transforms the nodes into the best 2000's aesthetics styles while preserving full functionality.
 
 ![Modern Dark Theme](assets/MODERN_DARK.png)
 
@@ -8,6 +9,7 @@ A professional theme pack for ComfyUI that transforms the node editor with moder
 
 - **10 Unique Themes** - From minimal to cyberpunk, find your perfect style
 - **Non-invasive** - Works with all existing nodes and extensions
+- **Manual Color Support** - Right-click any node to set custom colors - manual colors override theme styling
 - **Execution Glow** - Currently running nodes glow with theme-matched colors
 - **Progress Bar** - Themed progress indicator for nodes like KSampler
 - **Keyboard Shortcuts** - Quick theme switching with Alt+1 through Alt+0
@@ -59,7 +61,7 @@ A professional theme pack for ComfyUI that transforms the node editor with moder
    ```
 2. Clone this repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ComfyUI-Niutonian-Themes.git
+   git clone https://github.com/Niutonian/ComfyUI-Niutonian-Themes.git
    ```
 3. Restart ComfyUI
 
@@ -70,6 +72,7 @@ A professional theme pack for ComfyUI that transforms the node editor with moder
 
 ## Usage
 
+### Switching Themes
 1. Right-click on the canvas to open the context menu
 2. Select **Niutonian Theme**
 3. Choose your preferred theme from the submenu
@@ -77,6 +80,15 @@ A professional theme pack for ComfyUI that transforms the node editor with moder
 Or use keyboard shortcuts:
 - **Alt+1** through **Alt+9**: Select themes 1-9
 - **Alt+0**: Select theme 10 (Ember Glow)
+
+### Manual Node Coloring
+You can override theme colors for individual nodes:
+1. Right-click on any node
+2. Select a color from the color palette
+3. The node will use your custom color instead of the theme color
+4. To remove manual coloring, select the default color or clear the color setting
+
+**Note**: Manually colored nodes will not display theme effects (glass, glow, scanlines) but will still show execution glow when running.
 
 ## Theme Customization
 
