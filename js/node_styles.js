@@ -263,7 +263,9 @@ function applyTheme() {
     const pack = getPack();
     const accent = getAccent(this);
     const titleH = options.title_height || LiteGraph.NODE_TITLE_HEIGHT || 30;
-    const w = this.size[0];
+    const collapsed = this.flags?.collapsed;
+    // Use collapsed width for collapsed nodes
+    const w = collapsed ? (this._collapsed_width || LiteGraph.NODE_COLLAPSED_WIDTH || 80) : this.size[0];
     
     // Check if node has manual colors set by user
     const hasManualColor = (this.color && this.color !== LiteGraph.NODE_DEFAULT_COLOR) || 
@@ -280,7 +282,7 @@ function applyTheme() {
     }
     
     // For collapsed nodes, we still need to draw the background
-    if (this.flags?.collapsed) {
+    if (collapsed) {
       const r = Math.min(pack.corner_radius, 12);
       ctx.save();
       ctx.beginPath();
@@ -344,7 +346,8 @@ function applyTheme() {
     const titleH = renderTitle ? (LiteGraph.NODE_TITLE_HEIGHT || 30) : 0;
     
     // Body dimensions (what LiteGraph passes as size)
-    const w = size[0];
+    // For collapsed nodes, use the collapsed width from LiteGraph
+    const w = collapsed ? (node._collapsed_width || LiteGraph.NODE_COLLAPSED_WIDTH || 80) : size[0];
     const h = size[1];
     const r = Math.min(pack.corner_radius, 12);
     
