@@ -158,7 +158,7 @@ const STYLE_PACKS = {
     border_selected: "#ff69b4",
     shadow_color: "rgba(0,0,0,0.1)",
     shadow_size: 12,
-    corner_radius: 8,
+    corner_radius: 0,
     glow: true,
     executing_color: "#ff69b4",  // Pink
   },
@@ -172,7 +172,7 @@ const STYLE_PACKS = {
     border_selected: "#ff007f",
     shadow_color: "rgba(0,0,0,0.15)",
     shadow_size: 10,
-    corner_radius: 6,
+    corner_radius: 0,
     glow: true,
     executing_color: "#ff007f",  // Rose red
   },
