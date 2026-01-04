@@ -17,34 +17,34 @@ A theme pack for ComfyUI that transforms the nodes into the best 2000's aestheti
 
 ## Available Themes
 
-### Modern Dark (Alt+1)
+### Modern Dark
 ![Modern Dark](assets/MODERN_DARK.png)
 
-### Glassmorphism (Alt+2)
+### Glassmorphism
 ![Glassmorphism](assets/GLASSMORPHISM.png)
 
-### Neon Glow (Alt+3)
+### Neon Glow
 ![Neon Glow](assets/NEON_GLOW.png)
 
-### Minimal Clean (Alt+4)
+### Minimal Clean
 ![Minimal Clean](assets/MINIMAL_CLEAN.png)
 
-### Ocean Deep (Alt+5)
+### Ocean Deep
 ![Ocean Deep](assets/OCEAN_DEEP.png)
 
-### Sunset Warm (Alt+6)
+### Sunset Warm
 ![Sunset Warm](assets/SUNSET_WARM.png)
 
-### Cyberpunk (Alt+7)
+### Cyberpunk
 ![Cyberpunk](assets/CYBERPUNK.png)
 
-### Forest Night (Alt+8)
+### Forest Night
 ![Forest Night](assets/FOREST_NIGHT.png)
 
-### Midnight Purple (Alt+9)
+### Midnight Purple
 ![Midnight Purple](assets/MIDNIGHT_PURPLE.png)
 
-### Ember Glow (Alt+0)
+### Ember Glow
 ![Ember Glow](assets/EMBER_GLOW.png)
 
 ## Installation
@@ -77,9 +77,7 @@ A theme pack for ComfyUI that transforms the nodes into the best 2000's aestheti
 2. Select **Niutonian Theme**
 3. Choose your preferred theme from the submenu
 
-Or use keyboard shortcuts:
-- **Alt+1** through **Alt+9**: Select themes 1-9
-- **Alt+0**: Select theme 10 (Ember Glow)
+
 
 ### Manual Node Coloring
 You can override theme colors for individual nodes:

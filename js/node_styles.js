@@ -148,6 +148,34 @@ const STYLE_PACKS = {
     glow: true,
     executing_color: "#ff9e80",
   },
+  white: {
+    name: "White Theme",
+    node_bg: "#ffffff",
+    node_selected: "#f0f0f0",
+    node_title_bg: "#e0e0e0",
+    node_title_color: "#000000",
+    border_color: "#cccccc",
+    border_selected: "#ff69b4",
+    shadow_color: "rgba(0,0,0,0.1)",
+    shadow_size: 12,
+    corner_radius: 8,
+    glow: true,
+    executing_color: "#ff69b4",  // Pink
+  },
+  lightgray: {
+    name: "Light Gray Theme",
+    node_bg: "#e0e0e0",
+    node_selected: "#d0d0d0",
+    node_title_bg: "#c0c0c0",
+    node_title_color: "#000000",
+    border_color: "#a0a0a0",
+    border_selected: "#ff007f",
+    shadow_color: "rgba(0,0,0,0.15)",
+    shadow_size: 10,
+    corner_radius: 6,
+    glow: true,
+    executing_color: "#ff007f",  // Rose red
+  },
 };
 
 // Node type accent colors
@@ -172,10 +200,18 @@ const NODE_ACCENTS = {
 };
 
 function getAccent(node) {
+  // For white and light gray themes, always return the execution color as accent for glow
+  const pack = getPack();
+  if (pack.name === "White Theme" || pack.name === "Light Gray Theme") {
+    return pack.executing_color || NODE_ACCENTS.default;
+  }
+  
+  // For other themes, use node type based accents
   const type = node?.type || "";
   for (const [key, color] of Object.entries(NODE_ACCENTS)) {
     if (key !== "default" && type.includes(key)) return color;
   }
+  
   return NODE_ACCENTS.default;
 }
 
@@ -212,14 +248,21 @@ function applyTheme() {
   LiteGraph.NODE_DEFAULT_COLOR = pack.node_bg;
   LiteGraph.NODE_DEFAULT_BGCOLOR = pack.node_bg;
   LiteGraph.NODE_DEFAULT_BOXCOLOR = "#ffffff"; // White box for visibility
-  LiteGraph.NODE_TITLE_COLOR = "#ffffff"; // Force white title text for visibility
-  LiteGraph.NODE_SELECTED_TITLE_COLOR = "#ffffff"; // Ensure selected title is visible
-  LiteGraph.NODE_TEXT_COLOR = "#ffffff"; // White text
+  
+  // Set text color based on theme - white themes need black text
+  const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+  const textColor = isLightTheme ? "#000000" : "#ffffff";
+  
+  LiteGraph.NODE_TITLE_COLOR = textColor; // Set title text color based on theme
+  LiteGraph.NODE_SELECTED_TITLE_COLOR = textColor; // Ensure selected title is visible
+  LiteGraph.NODE_TEXT_COLOR = textColor; // Set text color based on theme
   LiteGraph.NODE_DEFAULT_SHAPE = "box";
   
-  // Also set the canvas title color
+  // Also set the canvas title color based on theme
   if (LGraphCanvas.prototype) {
-    LGraphCanvas.prototype.node_title_color = "#ffffff";
+    const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+    const canvasTitleColor = isLightTheme ? "#000000" : "#ffffff";
+    LGraphCanvas.prototype.node_title_color = canvasTitleColor;
   }
   
   // Widget colors
@@ -293,6 +336,12 @@ function applyTheme() {
       }
       ctx.fill();
       ctx.shadowColor = 'transparent';
+      
+      // For light themes, ensure title text is visible
+      const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+      // We'll let the original title drawing logic handle the text, but ensure the background contrasts
+      // The actual title text color is controlled via LiteGraph.NODE_TITLE_COLOR which we set elsewhere
+      
       ctx.restore();
       return;
     }
@@ -420,18 +469,21 @@ function applyTheme() {
       ctx.strokeStyle = execColor;
       ctx.lineWidth = 3;
     } else {
-      ctx.strokeStyle = selected ? pack.border_selected : pack.border_color;
+      // Always use gray border color, regardless of selection state
+      ctx.strokeStyle = pack.border_color;
       ctx.lineWidth = selected ? 2 : 1;
     }
     ctx.stroke();
     
     // === GLOW FOR SELECTED (neon theme) ===
     if (selected && pack.glow && !isExecuting) {
-      ctx.shadowColor = pack.border_selected;
+      // Use accent color for glow effect instead of border color
+      ctx.shadowColor = accent;
       ctx.shadowBlur = 20;
       ctx.beginPath();
       ctx.roundRect(0, fullY, w, collapsed ? titleH : fullH, r);
-      ctx.strokeStyle = pack.border_selected;
+      // Use a lighter version of the accent color for the glow stroke
+      ctx.strokeStyle = accent;
       ctx.lineWidth = 2;
       ctx.stroke();
     }
@@ -500,9 +552,11 @@ function applyTheme() {
       });
       
       // Draw title text
+      const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+      const titleColor = isLightTheme ? "#000000" : "#ffffff";
       node.drawTitleText(ctx, {
         scale: this.ds?.scale || 1,
-        default_title_color: this.node_title_color || "#ffffff",
+        default_title_color: titleColor,
         low_quality: this.low_quality || false
       });
       
@@ -528,20 +582,29 @@ function reapplyTheme() {
     LiteGraph.NODE_DEFAULT_COLOR = pack.node_bg;
     LiteGraph.NODE_DEFAULT_BGCOLOR = pack.node_bg;
     LiteGraph.NODE_DEFAULT_BOXCOLOR = "#ffffff";
-    LiteGraph.NODE_TITLE_COLOR = "#ffffff"; // Force white for visibility
-    LiteGraph.NODE_SELECTED_TITLE_COLOR = "#ffffff";
-    LiteGraph.NODE_TEXT_COLOR = "#ffffff";
+    
+    // Set text color based on theme - white themes need black text
+    const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+    const textColor = isLightTheme ? "#000000" : "#ffffff";
+    
+    LiteGraph.NODE_TITLE_COLOR = textColor; // Set title text color based on theme
+    LiteGraph.NODE_SELECTED_TITLE_COLOR = textColor;
+    LiteGraph.NODE_TEXT_COLOR = textColor;
     LiteGraph.WIDGET_OUTLINE_COLOR = pack.border_color;
   }
   
+  // Determine canvas title color based on theme
+  const isLightTheme = pack.name === "White Theme" || pack.name === "Light Gray Theme";
+  const canvasTitleColor = isLightTheme ? "#000000" : "#ffffff";
+  
   // Update canvas title color
   if (LGraphCanvas?.prototype) {
-    LGraphCanvas.prototype.node_title_color = "#ffffff";
+    LGraphCanvas.prototype.node_title_color = canvasTitleColor;
   }
   
   // Also update the active canvas instance
   if (app.canvas) {
-    app.canvas.node_title_color = "#ffffff";
+    app.canvas.node_title_color = canvasTitleColor;
   }
   
   // Force all nodes to recalculate their size to match the new theme
@@ -618,19 +681,6 @@ app.registerExtension({
       }
     }, 200);
     
-    // Keyboard shortcuts (Alt+1 through Alt+0 for 10 themes)
-    document.addEventListener("keydown", (e) => {
-      if (e.altKey && e.key >= "0" && e.key <= "9") {
-        const packIds = Object.keys(STYLE_PACKS);
-        // Alt+1 = index 0, Alt+2 = index 1, ..., Alt+0 = index 9
-        const index = e.key === "0" ? 9 : parseInt(e.key) - 1;
-        if (index < packIds.length) {
-          setPackId(packIds[index]);
-          reapplyTheme();
-        }
-        e.preventDefault();
-      }
-    });
     
     // Track currently executing node ID
     let currentExecutingNodeId = null;
